@@ -1,0 +1,6 @@
+__pycache__/
+.idea/
+data/
+Trained_nets/
+*.h5
+*.npy

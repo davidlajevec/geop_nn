@@ -107,9 +107,9 @@ def plot_acc_hist(history, folderpath):
 ### ELSE ###
 
 def save_clima(): 
-    data = data_processing(load_data())  
+    data = data_processing(load_data())[-365:]  
     clima = data.mean(axis = 0)
-    clima.dump('data/clima.npy')
+    clima.dump('data/clima_test.npy')
     return
 
 if __name__ == '__main__':

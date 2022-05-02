@@ -56,7 +56,17 @@ def persistance():
         rmse, acc = get_test_metrics(y_true, test_X)
         rmse_persistance[i+1] = np.mean(rmse)
         accuracy_persistance[i+1] = np.mean(acc)
-    return rmse_persistance, accuracy_persistance   
+    return rmse_persistance, accuracy_persistance 
+
+def climatology():
+    clim = np.load('data/clima_test.npy', allow_pickle = True).astype('float32')
+    _, y_true = test_data(skip_day=1)
+    rmse_clima = np.zeros(len(y_true))
+    accuracy_clima = np.zeros(len(y_true))
+    for i in range(len(y_true)):
+        rmse_clima[i] = rmse(y_true[i], clim)
+        accuracy_clima[i] = accuracy(y_true[i], clim)
+    return np.mean(rmse_clima), np.mean(accuracy_clima)  
 
 if __name__ == '__main__': 
     #rmse_iter, acc_iter = iterative_predict('model_simple_enc_dec_1_day')
@@ -64,7 +74,9 @@ if __name__ == '__main__':
     rmse_per, acc_per = persistance()
     #rmse_direct, acc_direct = direct_predict('model_simple_enc_dec_7_day')
     rmse_direct, acc_direct = direct_predict('model_dense_7_day')
+    rmse_clima, acc_clima = climatology()   
     with open('metrics.txt', 'w') as f:
         f.write(f'Iteration:\n  RMSE: {rmse_iter}\n  ACC: {acc_iter}\n')
         f.write(f'Persistance:\n  RMSE: {rmse_per}\n  ACC: {acc_per}\n')
         f.write(f'Direct day 1:\n  RMSE: {rmse_direct}\n  ACC: {acc_direct}\n')
+        f.write(f'Climatology:\n  RMSE: {rmse_clima}\n  ACC: {acc_clima}\n')
